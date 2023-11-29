@@ -25,8 +25,6 @@ if not booking_service_url:
 def home():
     return "<h1 style='color:blue'>Welcome to the User service!</h1>"
 
-
-
 if __name__ == "__main__":
     print("Server running in port %s" % (PORT))
     # Start the Flask app on the specified host and port in debug mode.

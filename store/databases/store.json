@@ -1,0 +1,20 @@
+{
+  "store": [
+    {
+      "name": "Smous",
+      "price": 130
+    },
+    {
+      "name": "Chup",
+      "price": 95
+    },
+    {
+      "name": "Tulup",
+      "price": 80
+    },
+    {
+      "name": "Ratatatatata",
+      "price": 100
+    }
+  ]
+}
