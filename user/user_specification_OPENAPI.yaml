@@ -1,0 +1,203 @@
+---
+openapi: 3.1.0
+info:
+  title: Showtime API
+  description: This is the API of the User service
+  contact:
+    email1: zakaria.soukrat@imt-atlantique.fr
+    email2: nahuel.canavy@imt-atlantique.fr
+  license:
+    name: GPL v3
+    url: https://www.gnu.org/licenses/gpl-3.0.en.html
+  version: 1.0.0
+tags:
+- name: admins
+  description: Secured Admin-only calls
+- name: developers
+  description: Operations available to regular developers
+paths:
+  /:
+    get:
+      tags:
+      - developers
+      summary: home page of the service
+      operationId: home
+      responses:
+        "200":
+          description: welcome message
+          content:
+            text/html:
+              schema:
+                type: string
+                example: <h1>Test</h1>
+  /showusers:
+    get:
+      tags:
+      - developers
+      summary: get the full JSON database
+      operationId: get_users
+      responses:
+        "200":
+          description: full JSON
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/Users/AllUsers'
+  /show/{user_name}:
+    get:
+        tags:
+        - developers
+        summary: get a single user.
+        operationID : get_user
+        parameters:
+          - name: name
+            in: path
+            description: name.
+            required: true
+            style: simple
+            explode: false
+            schema:
+              type: string
+        responses:
+          "200":
+            description: get the informations of a single user
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/Users/User'
+          "400":
+            description: bad input parameter
+  /show/reservation/user/{user_name}:
+    get:
+      tags:
+      - developers
+      summary: Show the reservation of a user by its name. The service Booking needs to be interrogated.
+      operationId: get_user_reservation_by_name
+      parameters:
+      - name: name
+        in: path
+        description: name.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Name
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/Users/Reservations'
+        "400":
+          description: bad input parameter
+/show/information/movie/user/{name}:
+    get:
+      tags:
+      - developers
+      summary: Show the information of a movies reserved by a user. The services Booking and Movie need to be interrogated.
+      operationId: get_user_byname
+      parameters:
+      - name: name
+        in: path
+        description: name.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Name
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/Users/Information'
+        "400":
+          description: bad input parameter
+components:
+  Users:
+    AllUsers:
+      required:
+      - users
+      type: object
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/Users/users'
+    User:
+      required:
+      - id
+      - name
+      - last_active
+      type: object
+      properties:
+        id:
+          type: string
+          example: "chris_rivers"
+        name:
+          type: string
+          example: "Chris Rivers"
+        last_active:
+          type : int
+          example: 1360031222
+    Reservations:
+        required:
+        - id
+        - name
+        - dateItem
+        type: object
+        properties:
+          id:
+            type: string
+            example: "20151130"
+          movies:
+            type: array
+            items:
+              $ref: '#/components/Users/DateItem'
+    DateItem:
+      required:
+        - date
+        - movies
+      type: object
+      properties:
+        date:
+          type: string
+          example: "20151201"
+        movies:
+          type: array
+          items:
+            type: string
+            example: 276c79ec-a26a-40a6-b3d3-fb242a5947b6
+    Informations:
+        required:
+        - user
+        - movies
+        type: object
+        properties:
+          user : '#/components/schemas/User'
+          movies:
+            type: array
+            items:
+              $ref: '#/components/Users/MovieItem'
+    MovieItem:
+      type: object
+      required:
+        - title
+        - rating
+        - director
+        - id
+      properties:
+        title:
+          type: string
+          example: The Martian
+        rating:
+          type: integer
+          example: 7
+        director:
+          type: string
+          example: Paul McGuigan
+        id:
+          type: string
+          example: 39ab85e5-5e8e-4dc5-afea-65dc368bd7ab
