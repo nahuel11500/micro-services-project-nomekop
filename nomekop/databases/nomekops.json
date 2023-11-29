@@ -1,0 +1,28 @@
+{
+  "nomekops": [
+    {
+      "name": "Smous",
+      "health": 100,
+      "damage": 15,
+      "type": "Water"
+    },
+    {
+      "name": "Chup",
+      "health": 60,
+      "damage": 40,
+      "type": "Plant"
+    },
+    {
+      "name": "Tulup",
+      "health": 75,
+      "damage": 20,
+      "type": "Air"
+    },
+    {
+      "name": "Ratatatatata",
+      "health": 80,
+      "damage": 35,
+      "type": "Fire"
+    }
+  ]
+}
