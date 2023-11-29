@@ -18,6 +18,9 @@ times_service_url = os.getenv('TIMES_SERVICE_URL', 'http://127.0.0.1:3202')
 def home():
    return "<h1 style='color:blue'>Welcome to the Booking service!</h1>"
 
+
+
+
 @app.route("/players", methods=['GET'])
 def get_players():
    res = make_response(jsonify(players), 200)
@@ -28,19 +31,9 @@ def get_players():
 @app.route("/player/<player_name>", methods=['GET'])
 def get_player(player_name):
    for player in players:
-      if player["username"] = player_name:
-         return make_response(jsonify(player), 200)
-   return(make_response("Player not found", 400))
-
-
-## Return the information of a player based on his name
-@app.route("/player/<player_name>", methods=['POST'])
-def get_player(player_name):
-   for player in players:
       if player["username"] == player_name:
          return make_response(jsonify(player), 200)
    return(make_response("Player not found", 400))
-
 
 ## Create a match beetween the player doing the request and the player doind the request (in the body)
 @app.route("/player/create_match/<player_name>/<player_request>", methods=['POST'])

@@ -1,0 +1,14 @@
+{
+  "session": [
+    {
+      "session_id": "0000",
+      "name": "nahuel",
+      "role" : "admin"
+    },
+    {
+      "session_id": "010101",
+      "name": "Peter Curley",
+      "role": "admin"
+    }
+  ]
+}
