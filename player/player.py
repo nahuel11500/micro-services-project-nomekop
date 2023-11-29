@@ -43,7 +43,7 @@ def create_player(player_name):
       "Crédit": 0,
       "Badges": []
     }
-   movies.append(req)
+   players.append(req)
    res = make_response(jsonify({"message": "Player added"}), 200)
    return res
 
