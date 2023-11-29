@@ -43,9 +43,8 @@ def create_player(player_name):
       "Crédit": 0,
       "Badges": []
     }
-   players.append(req)
-   res = make_response(jsonify({"message": "Player added"}), 200)
-   return res
+   players.append(infos)
+   return(make_response(jsonify({"message": "Player added"}), 200))
 
 
 ## Create a match beetween the player doing the request and the player doind the request (in the body)
