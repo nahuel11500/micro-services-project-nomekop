@@ -3,11 +3,7 @@ openapi: 3.1.0
 info:
   title: Movie API
   summary: This is the API of the Movie service
-  description: This is the API of the Movie service, it should be much much much much much much much much much much much much much much much much much much much much much longer
-  contact:
-    name: Helene Coullon
-    url: https://helene-coullon.fr/
-    email: helene.coullon@imt-atlantique.fr
+  description: This is the API of the Movie service
   license:
     name: GPL v3
     url: https://www.gnu.org/licenses/gpl-3.0.en.html

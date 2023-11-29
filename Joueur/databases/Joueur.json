@@ -1,0 +1,16 @@
+{
+  "joueurs": [
+    {
+      "username": "Eloi",
+      "pokemons": [ "Ratatatatata"],
+      "Crédit": 0,
+      "Badges": []
+    },
+    {
+      "username": "Nahuel",
+      "pokemons": [ "Dracaufeu"],
+      "Crédit": 10000000,
+      "Badges": []
+    } 
+  ]
+}
