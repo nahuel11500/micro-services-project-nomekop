@@ -1,10 +1,10 @@
 {
-  "joueurs": [
+  "players": [
     {
       "username": "Eloi",
       "pokemons": [ "Ratatatatata"],
-      "Crédit": 0,
-      "Badges": []
+      "Crédit": 1,
+      "Badges": ["#1 Best Player"]
     },
     {
       "username": "Nahuel",
