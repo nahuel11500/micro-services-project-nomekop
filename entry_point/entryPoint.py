@@ -34,7 +34,7 @@ def login():
     """This function get the username and the password in the body, verifies if it's okay and then return a session id"""
     password = request.params()['password']
     username = request.params()['username']
-
+    
 
 ##########################################   Joueur     ########################################## 
 
