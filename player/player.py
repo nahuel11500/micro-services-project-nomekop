@@ -5,9 +5,13 @@ import os
 
 app = Flask(__name__)
 
+### Local port and host
 PORT = 3201
-PORT_STORE = 3203
 HOST = '0.0.0.0'
+
+## Others Port
+# Define the URL of store service Booking using a env variable 
+store_service_url = os.getenv('STORE_SERVICE_URL', 'http://localhost:3203')
 
 absolute_path = os.path.dirname(__file__)
 relative_path = "databases/players.json"
@@ -15,8 +19,7 @@ full_path = os.path.join(absolute_path, relative_path)
 with open(full_path, "r") as jsf:
    players = json.load(jsf)["players"]
 
-# Définissez l'URL du service Booking en utilisant une variable d'environnement
-times_service_url = os.getenv('TIMES_SERVICE_URL', 'http://127.0.0.1:3202')
+
 
 @app.route("/", methods=['GET'])
 def home():
@@ -65,7 +68,7 @@ def buy_nomekop(player_name, nomekop):
    """This function will buy a pokemon for the player and add it to it's list"""
    for player in players:
       if player["username"] == player_name:
-         price = requests.get(f'http://localhost:{PORT_STORE}/getNomekopPrice/{nomekop}')
+         price = requests.get(f'{store_service_url}/getNomekopPrice/{nomekop}')
          if player["Crédit"] >= price:
                player["Crédit"] -= price
                return make_response(jsonify(player), 200)

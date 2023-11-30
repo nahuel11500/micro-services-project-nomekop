@@ -1,29 +1,60 @@
 version: "3.9"
 
 services:
-  movie:
-    container_name: movie_container
-    build: ./movie/
+  entry_point:
+    container_name: entry_point_container
+    build: ./entry_point/
     ports:
       - "3200:3200"
-  showtime:
-    container_name: showtime_container
-    build: ./showtime/
+    environment:
+      - USER_INFORMATION_SERVICE_URL=http://user_information_container:3206
+      - PLAYER_SERVICE_URL=http://player_container:3201
+      - MATCH_SERVICE_URL=http://match_container:3204
+      - STAT_SERVICE_URL=http://stat_container:3205
+
+  player:
+    container_name: player_container
+    build: ./player/
     ports:
-      - "3202:3202"
-  user:
-    container_name: user_container
-    build: ./user/
+      - "3201:3201"
+    environment:
+      - NOMEKOP_SERVICE_URL=http://nomekop_container:3202
+      - STORE_SERVICE_URL=http://store_container:3203
+      - MATCH_SERVICE_URL=http://match_container:3204
+
+  nomekop:
+    container_name: nomekop_container
+    build: ./nomekop/
+    ports:
+        - "3202:3202"
+
+  store:
+    container_name: store_container
+    build: ./store/
     ports:
         - "3203:3203"
     environment:
-      - BOOKING_SERVICE_URL=http://booking_container:3201
-      - MOVIE_SERVICE_URL=http://movie_container:3200
-  booking:
-    container_name: booking_container
-    build: ./booking/
+      - NOMEKOP_SERVICE_URL=http://nomekop_container:3202
+
+  match:
+    container_name: match_container
+    build: ./match/
     ports:
-        - "3201:3201"
+        - "3204:3204"
     environment:
-      - TIMES_SERVICE_URL=http://showtime_container:3202
+      - STAT_SERVICE_URL=http://stat_container:3205
+
+  stat:
+    container_name: stat_container
+    build: ./stat/
+    ports:
+        - "3205:3205"
+
+  user_information:
+    container_name: user_information_container
+    build: ./user_information/
+    ports:
+        - "3206:3206"
+    environment:
+      - PLAYER_SERVICE_URL=http://player_container:3201
 

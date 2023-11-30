@@ -95,18 +95,29 @@ def main_menu(stdscr):
 
 ########## Sub_Menu
 def manage_creatures(stdscr):
-    stdscr.clear()
-    stdscr.addstr("Creature Management\n\n")
-    stdscr.addstr("1. View Creatures\n2. Buy Creature\n\n")
-    stdscr.addstr("Press 'b' to go back to the main menu.\n")
+    menu_items = ["View Nomekops", "Buy Nomekops", "Go Back", "Matches"]
+    current_selection = 0
     while True:
+        stdscr.clear()
+        stdscr.addstr("Nomekops Management\n\n")
+        for idx, item in enumerate(menu_items):
+            if idx == current_selection:
+                stdscr.addstr(f"> {item}\n", curses.A_REVERSE)
+            else:
+                stdscr.addstr(f"  {item}\n")
+        
         key = stdscr.getch()
-        if key == ord('1'):
-            view_creatures()
-        elif key == ord('2'):
-            buy_creature()
-        elif key == ord('b'):
-            break
+        if key == curses.KEY_UP and current_selection > 0:
+            current_selection -= 1
+        elif key == curses.KEY_DOWN and current_selection < len(menu_items) - 1:
+            current_selection += 1
+        elif key in [curses.KEY_ENTER, 10]:
+            if current_selection == 0:
+                view_nomekops(stdscr)
+            elif current_selection == 1:
+                buy_nomekops(stdscr)
+            elif current_selection == 2:
+                break
 
 
 
@@ -147,10 +158,10 @@ def login(username, password):
 
 
 # Function placeholders for API interactions
-def view_creatures():
+def view_nomekops():
     pass  # API call to get creatures
 
-def buy_creature():
+def buy_nomekops():
     pass  # API call to buy a creature
 
 def view_players():

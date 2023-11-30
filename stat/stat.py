@@ -18,12 +18,10 @@ booking_service_url = os.getenv('BOOKING_SERVICE_URL', 'http://127.0.0.1:3201')
 #Définie l'URL du service Moovie en utilisant une variable d'environnement
 movie_service_url = os.getenv('MOVIE_SERVICE_URL', 'http://127.0.0.1:3200')
 
-#URL de secours si la variable d'environnement n'est pas définie
-if not booking_service_url:
-    movie_service_url = 'http://127.0.0.1:3201'
+
 @app.route("/", methods=['GET'])
 def home():
-    return "<h1 style='color:blue'>Welcome to the User service!</h1>"
+    return "<h1 style='color:blue'>Welcome to the Stat service!</h1>"
 
 
 
