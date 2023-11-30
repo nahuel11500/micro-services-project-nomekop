@@ -60,6 +60,34 @@ def create_user():
     else:
         return make_response("Invalid data provided", 400)
 
+@app.route("/credentials_verification",methods=['GET'])
+def credentials_verification():
+    """This function get the username and the password in the body and verificate that they exist"""
+    # Charger les informations utilisateur
+    user_information = load_user_information()  
+
+    # Get data from request
+    data = request.get_json()  # Assuming the data is sent in JSON format
+    if data:
+        username = data.get('username')
+        password = data.get('password')
+
+        # Vérifier si le nom d'utilisateur existe déjà
+        for user in user_information:
+            if username == user["username"] :
+                if password == user["password"]:
+                    info = {
+                        "username" : username,
+                        "role" : user["role"]
+                    }
+                    return make_response(jsonify(info), 200)
+                else:
+                    return make_response(jsonify({"error": "Password incorrect"}), 400)
+        return make_response(jsonify({"error": "Usernamenot found"}), 400)
+
+    else:
+        return make_response(jsonify({"error": "Invalid data provided"}), 400)
+
 if __name__ == "__main__":
     #p = sys.argv[1]
     print("Server running in port %s"%(PORT))

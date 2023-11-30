@@ -9,7 +9,10 @@ PORT = 3201
 PORT_STORE = 3203
 HOST = '0.0.0.0'
 
-with open('{}/databases/players.json'.format("."), "r") as jsf:
+absolute_path = os.path.dirname(__file__)
+relative_path = "databases/players.json"
+full_path = os.path.join(absolute_path, relative_path)
+with open(full_path, "r") as jsf:
    players = json.load(jsf)["players"]
 
 # Définissez l'URL du service Booking en utilisant une variable d'environnement
