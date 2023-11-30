@@ -4,20 +4,21 @@ from werkzeug.exceptions import NotFound
 
 app = Flask(__name__)
 
-PORT = 3202
+##Local Port
+PORT = 3204
 HOST = '0.0.0.0'
 
-with open('{}/databases/times.json'.format("."), "r") as jsf:
-   schedule = json.load(jsf)["schedule"]
+with open('{}/databases/matchs.json'.format("."), "r") as jsf:
+   matchs = json.load(jsf)["matchs"]
 
 @app.route("/", methods=['GET'])
 def home():
-   return "<h1 style='color:blue'>Welcome to the Showtime service!</h1>"
+   return "<h1 style='color:blue'>Welcome to the Match service!</h1>"
 
 # This route handles a GET request to '/showtimes'.
-@app.route("/showtimes", methods = ['GET'])
-def get_showtime():
-   res = make_response(jsonify(schedule), 200)
+@app.route("/matchs", methods = ['GET'])
+def get_matchs():
+   res = make_response(jsonify(matchs), 200)
    return res
 
 if __name__ == "__main__":
