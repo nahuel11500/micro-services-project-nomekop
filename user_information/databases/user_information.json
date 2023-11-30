@@ -14,16 +14,6 @@
             "password": "Nahuel",
             "username": "Nahuel",
             "role": "player"
-        },
-        {
-            "username": "nouveau",
-            "password": "nouveau",
-            "role": "player"
-        },
-        {
-            "username": "test",
-            "password": "test",
-            "role": "player"
         }
     ]
 }

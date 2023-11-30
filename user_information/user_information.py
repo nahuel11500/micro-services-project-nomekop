@@ -46,7 +46,7 @@ def create_user():
         # Vérifier si le nom d'utilisateur existe déjà
         for user in user_information:
             if username == user["username"]:
-                return make_response("Username already exists", 400)
+                return make_response(jsonify({"error": "Username already exist"}), 400)
 
         # Sinon, créer le nouveau joueur
         new_player = {
@@ -56,9 +56,9 @@ def create_user():
         }
         user_information.append(new_player)
         save_user_information(user_information)  # Sauvegarder les nouvelles informations
-        return make_response("Player added successfully", 200)
+        return make_response(jsonify({"success": "Player created"}), 400)
     else:
-        return make_response("Invalid data provided", 400)
+        return make_response(jsonify({"error": "Username not found"}), 400)
 
 @app.route("/credentials_verification",methods=['GET'])
 def credentials_verification():
@@ -83,7 +83,7 @@ def credentials_verification():
                     return make_response(jsonify(info), 200)
                 else:
                     return make_response(jsonify({"error": "Password incorrect"}), 400)
-        return make_response(jsonify({"error": "Usernamenot found"}), 400)
+        return make_response(jsonify({"error": "Username not found"}), 400)
 
     else:
         return make_response(jsonify({"error": "Invalid data provided"}), 400)

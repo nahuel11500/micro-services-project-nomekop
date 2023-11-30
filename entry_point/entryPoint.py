@@ -46,7 +46,9 @@ def login():
         req = requests.get(f'http://localhost:{PORT_USER_INFORMATION}/credentials_verification', json=data)
         ### Login unsuccessful
         if req.status_code == 400:
-            return (req)
+            response = make_response(jsonify(req.json()))
+            response.status_code = 400
+            return response
         ### Login succesful
         elif req.status_code == 200:
             data = req.json() 
@@ -68,7 +70,9 @@ def create_account():
     data = request.get_json()  # Assuming the data is sent in JSON format
     if data:
         req = requests.post(f'http://localhost:{PORT_USER_INFORMATION}/creation_player', json=data)
-        return(req)
+        response = make_response(jsonify(req.json()))
+        response.status_code = 200
+        return response
     else:
         return make_response("Invalid data provided", 400)
 
