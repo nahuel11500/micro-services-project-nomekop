@@ -95,7 +95,7 @@ def main_menu(stdscr):
 
 ########## Sub_Menu
 def manage_creatures(stdscr):
-    menu_items = ["View Nomekops", "Buy Nomekops", "Go Back", "Matches"]
+    menu_items = ["View Nomekops", "Buy Nomekops", "Go Back"]
     current_selection = 0
     while True:
         stdscr.clear()

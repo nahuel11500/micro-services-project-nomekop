@@ -32,5 +32,5 @@ def get_nomekop_stats(nomekopName):
 
 if __name__ == "__main__":
     #p = sys.argv[1]
-    print("Server running in port %s"%(PORT_NOMEKOP = 3202))
-    app.run(host=HOST, port=PORT_NOMEKOP = 3202)
+    print("Server running in port %s"%(PORT_NOMEKOP))
+    app.run(host=HOST, port=PORT_NOMEKOP)

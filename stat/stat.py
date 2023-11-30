@@ -7,8 +7,11 @@ app = Flask(__name__)
 PORT = 3203
 HOST = '0.0.0.0'
 
-with open('{}/databases/users.json'.format("."), "r") as jsf:
-    users = json.load(jsf)["users"]
+absolute_path = os.path.dirname(__file__)
+relative_path = "databases/stats.json"
+full_path = os.path.join(absolute_path, relative_path)
+with open(full_path, "r") as jsf:
+    users = json.load(jsf)["stats"]
 
 #Définie l'URL du service Booking en utilisant une variable d'environnement
 # (la seconde valeur est la valeur par défaut)

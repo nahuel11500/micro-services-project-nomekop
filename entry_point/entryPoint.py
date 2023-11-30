@@ -12,24 +12,20 @@ HOST = '0.0.0.0'
 ## Others ports
 PORT_USER_INFORMATION = 3206
 PORT_PLAYER= 3201
+PORT_MATCH=3204
+PORT_STAT=3205
 
 absolute_path = os.path.dirname(__file__)
 relative_path = "databases/session.json"
 full_path = os.path.join(absolute_path, relative_path)
 with open(full_path, "r") as jsf:
     sessions = json.load(jsf)["session"]
-print(sessions)
-#Définie l'URL du service Booking en utilisant une variable d'environnement
-# (la seconde valeur est la valeur par défaut)
-booking_service_url = os.getenv('BOOKING_SERVICE_URL', 'http://127.0.0.1:3201')
 
-
-#Définie l'URL du service Moovie en utilisant une variable d'environnement
-movie_service_url = os.getenv('MOVIE_SERVICE_URL', 'http://127.0.0.1:3200')
-
-#URL de secours si la variable d'environnement n'est pas définie
-if not booking_service_url:
-    movie_service_url = 'http://127.0.0.1:3201'
+## Define services url using either env variables if the app is started with docker or localhost.
+user_information_service_url = os.getenv('USER_INFORMATION_SERVICE_URL', f'http://localhost:{PORT_USER_INFORMATION}')
+player_service_url = os.getenv('PLAYER_SERVICE_URL', f'http://localhost:{PORT_PLAYER}')
+match_service_url = os.getenv('MATCH_SERVICE_URL', f'http://localhost:{PORT_MATCH}')
+stat_service_url = os.getenv('STAT_SERVICE_URL', f'http://localhost:{PORT_STAT}')
 
 
 @app.route("/", methods=['GET'])
@@ -43,7 +39,7 @@ def login():
     """This function get the username and the password in the body, verifies if it's okay and then return a session id"""
     data = request.get_json()  # Assuming the data is sent in JSON format
     if data:
-        req = requests.get(f'http://localhost:{PORT_USER_INFORMATION}/credentials_verification', json=data)
+        req = requests.get(f'{user_information_service_url}/credentials_verification', json=data)
         ### Login unsuccessful
         if req.status_code == 400:
             response = make_response(jsonify(req.json()))
@@ -69,7 +65,7 @@ def create_account():
     """This function get the username and the password in the body and create an account"""
     data = request.get_json()  # Assuming the data is sent in JSON format
     if data:
-        req = requests.post(f'http://localhost:{PORT_USER_INFORMATION}/creation_player', json=data)
+        req = requests.post(f'{user_information_service_url}/creation_player', json=data)
         response = make_response(jsonify(req.json()))
         response.status_code = 200
         return response
@@ -103,7 +99,7 @@ def login_required(f):
 @login_required
 def get_infos_players ():
     try:
-        req = requests.get(f'http://localhost:{PORT_PLAYER}/players')
+        req = requests.get(f'{player_service_url}/players')
         # Check if the request was successful (status code 200)
         if req.status_code == 200:
             # Create a response with the JSON content

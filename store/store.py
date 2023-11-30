@@ -31,10 +31,10 @@ def get_nomekops_prices():
     return(make_response(jsonify(nomekop), 200))
 
 @app.route("/getNomekopPrice/<nomekopName>", methods=["GET"])
-def get_nomekops_prices(nomekopName):
+def get_nomekops_price(nomekopName):
     for nomekop in items:
-      if nomekop["name"] = nomekopName:
-        return(make_response(jsonify(nomekop["price"]), 200))
+      if nomekop["name"] == nomekopName:
+         return(make_response(jsonify(nomekop["price"]), 200))
     return(make_response("Nomekop not found", 400))
 
 @app.route("/getNomekopStats/<nomekopName>", methods=["GET"])
