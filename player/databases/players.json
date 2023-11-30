@@ -3,14 +3,14 @@
     {
       "username": "Eloi",
       "pokemons": [ "Ratatatatata"],
-      "Crédit": 1,
-      "Badges": ["#1 Best Player"]
+      "crédit": 1,
+      "badges": ["#1 Best Player"]
     },
     {
       "username": "Nahuel",
       "pokemons": [ "Dracaufeu"],
-      "Crédit": 10000000,
-      "Badges": []
+      "crédit": 10000000,
+      "badges": []
     } 
   ]
 }

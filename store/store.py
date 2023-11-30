@@ -6,15 +6,21 @@ import os
 from werkzeug.exceptions import NotFound
 
 app = Flask(__name__)
-
+## Local port
 PORT_STORE = 3203
-PORT_NOMEKOP = 3202
 HOST = '0.0.0.0'
+
+## Others ports
+PORT_NOMEKOP = 3202
+
+## Database
 absolute_path = os.path.dirname(__file__)
 relative_path = "databases/store.json"
 full_path = os.path.join(absolute_path, relative_path)
 with open(full_path, "r") as jsf:
     items = json.load(jsf)["store"]
+
+
 
 @app.route("/", methods=['GET'])
 def home():

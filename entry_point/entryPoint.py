@@ -32,9 +32,17 @@ def home():
 @app.route("/login", methods=['GET'])
 def login():
     """This function get the username and the password in the body, verifies if it's okay and then return a session id"""
-    password = request.params()['password']
-    username = request.params()['username']
-    
+    data = request.get_json()  # Assuming the data is sent in JSON format
+    password = data.get('password')
+    username = data.get('username')
+
+
+@app.route("/create_account", methods=['POST'])
+def login():
+    """This function get the username and the password in the body and create an account"""
+    data = request.get_json()  # Assuming the data is sent in JSON format
+    password = data.get('password')
+    username = data.get('username')
 
 ##########################################   Joueur     ########################################## 
 
@@ -54,6 +62,11 @@ def get_role(session_id):
         if session_id == session["session_id"]:
             return session["role"]
 
+def get_name(session_id):
+    """This function return the role of someone based on its session id"""
+    for session in sessions:
+        if session_id == session["session_id"]:
+            return session["name"]
 
 if __name__ == "__main__":
     print("Server running in port %s" % (PORT))

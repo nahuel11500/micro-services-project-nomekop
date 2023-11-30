@@ -7,9 +7,11 @@ from werkzeug.exceptions import NotFound
 
 app = Flask(__name__)
 
+## Local port
 PORT_NOMEKOP = 3202
-
 HOST = '0.0.0.0'
+
+## Database
 absolute_path = os.path.dirname(__file__)
 relative_path = "databases/nomekops.json"
 full_path = os.path.join(absolute_path, relative_path)

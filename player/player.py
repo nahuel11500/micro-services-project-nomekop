@@ -35,7 +35,7 @@ def get_player(player_name):
    return(make_response("Player not found", 400))
 
 
-## Add a player
+## Create a player
 @app.route("/player/<player_name>", methods=['POST'])
 def create_player(player_name):
    infos = {
@@ -59,6 +59,7 @@ def create_match(player_name,player_request):
 
 @app.route("/buy/<player_name>/<nomekop>", methods=['PUT'])
 def buy_nomekop(player_name, nomekop):
+   """This function will buy a pokemon for the player and add it to it's list"""
    for player in players:
       if player["username"] == player_name:
          price = requests.get(f'http://localhost:{PORT_STORE}/getNomekopPrice/{nomekop}')
