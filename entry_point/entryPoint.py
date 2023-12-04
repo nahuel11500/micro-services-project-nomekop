@@ -96,14 +96,14 @@ def login_required(f):
 ## 2)b)i)
 # Route protected by authentification
 @app.route('/player/get_info_other_player')
-@login_required
+#@login_required
 def get_infos_players ():
     try:
         req = requests.get(f'{player_service_url}/players')
         # Check if the request was successful (status code 200)
         if req.status_code == 200:
             # Create a response with the JSON content
-            response = make_response(jsonify(req.json()))
+            response = make_response(jsonify(remove_fields(req.json(),["credit","pokemons"])))
             response.status_code = 200
             return response
         else:
@@ -134,6 +134,14 @@ def get_name(session_id):
     for session in sessions:
         if session_id == session["session_id"]:
             return session["name"]
+        
+def remove_fields(json,fields):
+    for item in json:
+        for field in fields:
+            if field in item:
+                del item[field]
+    return json
+
 
 if __name__ == "__main__":
     print("Server running in port %s" % (PORT))

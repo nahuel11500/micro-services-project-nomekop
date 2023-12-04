@@ -3,7 +3,7 @@
     {
       "username": "Eloi",
       "pokemons": [ "Ratatatatata"],
-      "crédit": 1,
+      "credit": 1,
       "badges": ["#1 Best Player"],
       "match_win": 0,
       "match_lost": 1
@@ -11,7 +11,7 @@
     {
       "username": "Nahuel",
       "pokemons": [ "Dracaufeu"],
-      "crédit": 10000000,
+      "credit": 10000000,
       "badges": [],
       "match_win": 1,
       "match_lost": 0
