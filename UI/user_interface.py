@@ -123,12 +123,12 @@ def prompt_credentials(stdscr, title):
     curses.echo()
     return username, password
 
-def prompt_name(stdscr, title):
+def prompt_name(stdscr, title, argument_name):
     rows, cols = stdscr.getmaxyx()
     curses.echo()
     stdscr.clear()
     stdscr.addstr(rows // 2 - 2, cols // 2 - len(title) // 2, title)
-    stdscr.addstr(rows // 2, cols // 2 - 14, "Nomekop name: ")
+    stdscr.addstr(rows // 2, cols // 2 - len(argument_name), argument_name)
     name = stdscr.getstr(rows // 2, cols // 2 + 2).decode('utf-8')
     curses.cbreak()
     return name
@@ -227,9 +227,10 @@ def manage_nomekops(stdscr,content_win):
             if current_selection == 1:
                 view_store_nomekops(content_win)
             elif current_selection == 2:
-                buy_nomekops(content_win, session.cookies.get("session_id"), "Tulup")
+                nomekop_name_buy = prompt_name(stdscr, "Nomekop to buy", "Nomekop name: ")
+                buy_nomekops(content_win, session.cookies.get("session_id"), nomekop_name_buy)
             elif current_selection == 3:
-                nomekop_name = prompt_name(stdscr, "Nomekop stats")
+                nomekop_name = prompt_name(stdscr, "Nomekop stats", "Nomekop name: ")
                 view_nomekop_stats(content_win, nomekop_name)
             elif current_selection == 4:
                 break
@@ -344,7 +345,7 @@ def view_nomekop_stats(stdscr, nomekop):
     display_json(stdscr,sanitize_json(nomekop_stats))
 
 def buy_nomekops(stdscr, player, nomekop):
-    nomekop_msg = session.put(f'{base_url}/player/buyNomekop/{player}/{nomekop}').text
+    nomekop_msg = session.put(f'{base_url}/player/buyNomekop/{nomekop}').text
     display_json(stdscr, sanitize_json(nomekop_msg))
 
 ########## API CALL 2)b)

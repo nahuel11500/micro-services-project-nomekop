@@ -56,7 +56,7 @@ def login():
             session_id= str(uuid.uuid4())  # Generate a unique UUID
             session = {
                 "session_id": session_id,
-                "username":data.get('username'), 
+                "name":data.get('username'), 
                 "role":data.get('role')
             }
             sessions.append(session)
@@ -108,7 +108,7 @@ def get_infos_players ():
         # Check if the request was successful (status code 200)
         if req.status_code == 200:
             # Create a response with the JSON content
-            response = make_response(jsonify(remove_fields(req.json(),["credit","pokemons"])))
+            response = make_response(jsonify(remove_fields(req.json(),["credit","nomekops"])))
             response.status_code = 200
             return response
         else:
@@ -118,11 +118,12 @@ def get_infos_players ():
         # Handle any exceptions that occurred during the request
         return make_response(jsonify({"error": f"Request error: {str(e)}"}), 500)
 
-@app.route('/player/buyNomekop/<player>/<nomekop>', endpoint='buy_nomekop')
+@app.route('/player/buyNomekop/<nomekop>', endpoint='buy_nomekop', methods=['PUT'])
 @login_required
-def buy_nomekop (player,nomekop):
+def buy_nomekop (nomekop):
     try:
-        req = requests.get(f'{player_service_url}/buy/{player}/{nomekop}')
+        player = request.cookies.get('session_id')
+        req = requests.put(f'{player_service_url}/buy/{get_name(player)}/{nomekop}')
         # Check if the request was successful (status code 200)
         if req.status_code == 200:
             # Create a response with the JSON content
@@ -157,9 +158,6 @@ def create_match(player_name):
         return make_response(jsonify({"error": f"Request error: {str(e)}"}), 500)
 
 
-
-#################################################################################################
-##########################################   Store     ########################################## 
 #################################################################################################
 
 @app.route('/store/getNomekopsPrices', endpoint='get_nomekops_prices')
@@ -214,9 +212,10 @@ def get_role(session_id):
 
 def get_name(session_id):
     """This function return the role of someone based on its session id"""
+    print(sessions)
     for session in sessions:
         if str(session_id) == session["session_id"]:
-            return session["username"]
+            return session["name"]
       
 def remove_fields(json,fields):
     for item in json:

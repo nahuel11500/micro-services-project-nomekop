@@ -2,8 +2,8 @@
   "stats": [
     {
       "username": "Eloi",
-      "pokemons": [ "Ratatatatata"],
-      "crédit": 1,
+      "nomekops": [ "Ratatatatata"],
+      "credit": 1,
       "badges": ["#1 Best Player"],
       "match_win": 0,
       "match_lost": 1

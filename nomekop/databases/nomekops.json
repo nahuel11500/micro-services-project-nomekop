@@ -23,6 +23,12 @@
       "health": 80,
       "damage": 35,
       "type": "Fire"
+    },
+    {
+      "name": "Lezarticho",
+      "health": 65,
+      "damage": 35,
+      "type": "Plant"
     }
   ]
 }

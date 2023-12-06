@@ -2,15 +2,15 @@
   "players": [
     {
       "username": "Eloi",
-      "pokemons": [ "Ratatatatata"],
-      "credit": 1,
+      "nomekops": ["Ratatatatata"],
+      "credit": 1000,
       "badges": ["#1 Best Player"],
       "match_win": 0,
       "match_lost": 1
     },
     {
       "username": "Nahuel",
-      "pokemons": [ "Dracaufeu"],
+      "nomekops": ["Dracaufeu"],
       "credit": 10000000,
       "badges": [],
       "match_win": 1,

@@ -46,8 +46,8 @@ def get_player(player_name):
 def create_player(player_name):
    infos = {
       "username": player_name,
-      "pokemons": [],
-      "Crédit": 0,
+      "nomekops": [],
+      "credit": 0,
       "Badges": []
     }
    players.append(infos)
@@ -65,14 +65,15 @@ def create_match(player_name,player_request):
 
 @app.route("/buy/<player_name>/<nomekop>", methods=['PUT'])
 def buy_nomekop(player_name, nomekop):
-   """This function will buy a pokemon for the player and add it to it's list"""
+   """This function will buy a nomekop for the player and add it to it's list"""
    for player in players:
       if player["username"] == player_name:
-         price = requests.get(f'{store_service_url}/getNomekopPrice/{nomekop}')
-         if player["Crédit"] >= price:
-               player["Crédit"] -= price
+         price = int(requests.get(f'{store_service_url}/getNomekopPrice/{nomekop}').text)
+         if player["credit"] >= price:
+               player["credit"] -= price
+               player["nomekops"].append(nomekop)
                return make_response(jsonify(player), 200)
-         return make_response("Player does not have enough credits", 400)
+         return make_response(jsonify("Player does not have enough credits"), 200)
    return(make_response("Player not found", 400))
 
 
