@@ -30,10 +30,10 @@ def main(stdscr):
     content_win = create_newwin(int(height // 1.5), width, 0, 0)
     menu_win = create_newwin(height // 3, width, int(height // 1.5), 0)
 
-    # Start with the authentication screen
-    authentication_screen(menu_win,content_win)
+    # Start with the authentification screen
+    authentification_screen(menu_win,content_win)
 
-    # After authentication, proceed to the main menu
+    # After authentification, proceed to the main menu
     main_menu(menu_win,content_win)
 
     # Wait for user input before exiting
@@ -123,13 +123,13 @@ def prompt_credentials(stdscr, title):
     curses.echo()
     return username, password
 
-def authentication_screen(stdscr,content_win):
+def authentification_screen(stdscr,content_win):
     options = ["Login", "Create Account"]
     current_selection = 0
 
     while True:
         stdscr.clear()
-        stdscr.addstr("Authentication\n\n")
+        stdscr.addstr("Authentification\n\n")
         for idx, option in enumerate(options):
             if idx == current_selection:
                 stdscr.addstr(f"> {option}\n", curses.A_REVERSE)
@@ -193,7 +193,7 @@ def main_menu(menu_win,content_win):
 
 ########################### Sub_Menu PLayer #########################
 def manage_nomekops(stdscr,content_win):
-    menu_items = ["View my nomekops", "View store nomekops","Buy nomekops", "Go Back"]
+    menu_items = ["View my nomekops", "View store nomekops","Buy nomekops", "View nomekop stats", "Go back"]
     current_selection = 0
     rows, cols = stdscr.getmaxyx()
 
@@ -219,6 +219,8 @@ def manage_nomekops(stdscr,content_win):
             elif current_selection == 2:
                 buy_nomekops(content_win)
             elif current_selection == 3:
+                view_nomekop_stats(content_win, "Tulup")
+            elif current_selection == 4:
                 break
 
 
@@ -322,8 +324,13 @@ def participate_in_match(stdscr,content_win):
 
 ########## API CALL 2)a)
 # Function placeholders for API interactions
-def view_nomekops(stdscr):
-    pass
+def view_store_nomekops(stdscr):
+    nomekops = session.get(f'{base_url}/store/getNomekopsPrices').text
+    display_json(stdscr,sanitize_json(nomekops))
+
+def view_nomekop_stats(stdscr, nomekop):
+    nomekop_stats = session.get(f'{base_url}/nomekops/nomekopstats/{nomekop}').text
+    display_json(stdscr,sanitize_json(nomekop_stats))
 
 def view_store_nomekops(stdsrc):
     pass
@@ -336,6 +343,9 @@ def buy_nomekops(stdscr):
 def view_players(stdscr):
     players= session.get(f'{base_url}/player/get_info_other_player').text
     display_json(stdscr,sanitize_json(players))
+
+def view_nomekops(stdscr):
+    pass
 
 def send_message(stdsrc):
     pass

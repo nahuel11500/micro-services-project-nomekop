@@ -9,6 +9,8 @@ services:
       - PLAYER_SERVICE_URL=http://player_container:3201
       - MATCH_SERVICE_URL=http://match_container:3204
       - STAT_SERVICE_URL=http://stat_container:3205
+      - STORE_SERVICE_URL=http://store_container:3203
+      - NOMEKOP_SERVICE_URL=http://nomekop_container:3202
     ports:
       - "3200:3200"
   player:

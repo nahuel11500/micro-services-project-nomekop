@@ -28,7 +28,7 @@ def home():
 
 @app.route("/getNomekopsPrices", methods=["GET"])
 def get_nomekops_prices():
-    return(make_response(jsonify(nomekop), 200))
+    return(make_response(jsonify(items), 200))
 
 @app.route("/getNomekopPrice/<nomekopName>", methods=["GET"])
 def get_nomekops_price(nomekopName):

@@ -14,6 +14,8 @@ PORT_USER_INFORMATION = 3206
 PORT_PLAYER= 3201
 PORT_MATCH=3204
 PORT_STAT=3205
+PORT_STORE=3203
+PORT_NOMEKOPS=3202
 
 absolute_path = os.path.dirname(__file__)
 relative_path = "databases/session.json"
@@ -26,6 +28,9 @@ user_information_service_url = os.getenv('USER_INFORMATION_SERVICE_URL', f'http:
 player_service_url = os.getenv('PLAYER_SERVICE_URL', f'http://localhost:{PORT_PLAYER}')
 match_service_url = os.getenv('MATCH_SERVICE_URL', f'http://localhost:{PORT_MATCH}')
 stat_service_url = os.getenv('STAT_SERVICE_URL', f'http://localhost:{PORT_STAT}')
+store_service_url = os.getenv('STORE_SERVICE_URL', f'http://localhost:{PORT_STORE}')
+nomekop_service_url = os.getenv('NOMEKOP_SERVICE_URL', f'http://localhost:{PORT_NOMEKOPS}')
+
 
 
 @app.route("/", methods=['GET'])
@@ -114,6 +119,42 @@ def get_infos_players ():
         return make_response(jsonify({"error": f"Request error: {str(e)}"}), 500)
 
 ##########################################   Store     ########################################## 
+
+@app.route('/store/getNomekopsPrices')
+#@login_required
+def get_nomekops_prices():
+    try:
+        req = requests.get(f'{store_service_url}/getNomekopsPrices')
+        if req.status_code == 200:
+            # Create a response with the JSON content
+            response = make_response(jsonify(req.json()))
+            response.status_code = 200
+            return response
+        else:
+            # Handle the error, for example, return an error response
+            return make_response(jsonify({"error": "Failed to retrieve store info"}), req.status_code)
+    except requests.exceptions.RequestException as e:
+        # Handle any exceptions that occurred during the request
+        return make_response(jsonify({"error": f"Request error: {str(e)}"}), 500)
+
+##########################################   Nomekops     ##########################################
+
+@app.route('/nomekops/nomekopstats/<nomekopName>')
+@login_required
+def get_nomekops_stats(nomekopName):
+    try:
+        req = requests.get(f'{nomekop_service_url}/getNomekopStats/Tulup')
+        if req.status_code == 200:
+            # Create a response with the JSON content
+            response = make_response(jsonify(req.json()))
+            response.status_code = 200
+            return response
+        else:
+            # Handle the error, for example, return an error response
+            return make_response(jsonify({"error": "Failed to retrieve nomekop info"}), req.status_code)
+    except requests.exceptions.RequestException as e:
+        # Handle any exceptions that occurred during the request
+        return make_response(jsonify({"error": f"Request error: {str(e)}"}), 500)
 
 ##########################################   User Informations      ########################################## 
 
