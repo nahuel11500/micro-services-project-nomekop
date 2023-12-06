@@ -10,7 +10,7 @@ PORT = 3201
 HOST = '0.0.0.0'
 
 ## Others Port
-# Define the URL of store service Booking using a env variable 
+# Define the URL of store service  using a env variable 
 store_service_url = os.getenv('STORE_SERVICE_URL', 'http://localhost:3203')
 
 absolute_path = os.path.dirname(__file__)

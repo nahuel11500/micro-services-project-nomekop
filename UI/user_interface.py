@@ -49,7 +49,7 @@ def prompt_message(content_win, message):
     msg_win_height, msg_win_width = 5, 60
     msg_win = create_newwin(msg_win_height, msg_win_width, rows // 2 - msg_win_height // 2, cols // 2 - msg_win_width // 2)
     
-    msg_win.addstr(1, 1, message[:msg_win_width-2])
+    msg_win.addstr(1, 1, message)
     msg_win.refresh()
     content_win.getch()  # Wait for key press
     del msg_win
@@ -322,6 +322,9 @@ def participate_in_match(stdscr,content_win):
 ########## API CALL 2)a)
 # Function placeholders for API interactions
 def view_nomekops(stdscr):
+    pass
+
+def view_store_nomekops(stdsrc):
     pass
 
 def buy_nomekops(stdscr):

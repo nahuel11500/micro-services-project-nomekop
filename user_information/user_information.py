@@ -10,6 +10,9 @@ app = Flask(__name__)
 PORT = 3206
 HOST = '0.0.0.0'
 
+## Others Port
+# Define the URL of player service using a env variable 
+store_service_url = os.getenv('PLAYER_SERVICE_URL', 'http://localhost:3201')
 
 absolute_path = os.path.dirname(__file__)
 relative_path = "databases/user_information.json"
@@ -55,6 +58,10 @@ def create_user():
             "role": "player"
         }
         user_information.append(new_player)
+
+        ### Crée un nouveau profil de player
+        requests.post(f'{store_service_url}/player/{username}')
+
         save_user_information(user_information)  # Sauvegarder les nouvelles informations
         return make_response(jsonify({"success": "Player created"}), 400)
     else:

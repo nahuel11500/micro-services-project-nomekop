@@ -96,7 +96,7 @@ def login_required(f):
 ## 2)b)i)
 # Route protected by authentification
 @app.route('/player/get_info_other_player')
-#@login_required
+@login_required
 def get_infos_players ():
     try:
         req = requests.get(f'{player_service_url}/players')
