@@ -100,7 +100,7 @@ def login_required(f):
 
 ## 2)b)i)
 # Route protected by authentification
-@app.route('/player/get_info_other_player')
+@app.route('/player/get_info_other_player', endpoint='get_infos_players')
 @login_required
 def get_infos_players ():
     try:
@@ -120,8 +120,8 @@ def get_infos_players ():
 
 ##########################################   Store     ########################################## 
 
-@app.route('/store/getNomekopsPrices')
-#@login_required
+@app.route('/store/getNomekopsPrices', endpoint='get_nomekops_prices')
+@login_required
 def get_nomekops_prices():
     try:
         req = requests.get(f'{store_service_url}/getNomekopsPrices')
@@ -139,7 +139,7 @@ def get_nomekops_prices():
 
 ##########################################   Nomekops     ##########################################
 
-@app.route('/nomekops/nomekopstats/<nomekopName>')
+@app.route('/nomekops/nomekopstats/<nomekopName>', endpoint='get_nomekops_stats')
 @login_required
 def get_nomekops_stats(nomekopName):
     try:
