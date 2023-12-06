@@ -2,12 +2,12 @@
   "session": [
     {
       "session_id": "0000",
-      "name": "nahuel",
-      "role" : "admin"
+      "username": "nahuel",
+      "role": "admin"
     },
     {
       "session_id": "010101",
-      "name": "Peter Curley",
+      "username": "Peter Curley",
       "role": "admin"
     }
   ]

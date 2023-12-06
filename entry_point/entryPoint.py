@@ -136,7 +136,31 @@ def buy_nomekop (player,nomekop):
         # Handle any exceptions that occurred during the request
         return make_response(jsonify({"error": f"Request error: {str(e)}"}), 500)
 
+### This function create a match beetween the player and the requested.
+@app.route('/player/match/<player_name>', endpoint='create_match', methods=['POST'])    
+@login_required
+def create_match(player_name):
+    requester = get_name(request.cookies.get('session_id'))
+    try:
+        req = requests.post(f"{match_service_url}/create_match/{requester}/{player_name}")
+        # Check if the request was successful (status code 200)
+        if req.status_code == 200:
+            # Create a response with the JSON content
+            response = make_response(jsonify(req.json()))
+            response.status_code = 200
+            return response
+        else:
+            # Handle the error, for example, return an error response
+            return make_response(jsonify({"error": "Failed to create match"}), req.status_code)
+    except requests.exceptions.RequestException as e:
+        # Handle any exceptions that occurred during the request
+        return make_response(jsonify({"error": f"Request error: {str(e)}"}), 500)
+
+
+
+#################################################################################################
 ##########################################   Store     ########################################## 
+#################################################################################################
 
 @app.route('/store/getNomekopsPrices', endpoint='get_nomekops_prices')
 @login_required
@@ -191,9 +215,9 @@ def get_role(session_id):
 def get_name(session_id):
     """This function return the role of someone based on its session id"""
     for session in sessions:
-        if session_id == session["session_id"]:
-            return session["name"]
-        
+        if str(session_id) == session["session_id"]:
+            return session["username"]
+      
 def remove_fields(json,fields):
     for item in json:
         for field in fields:
