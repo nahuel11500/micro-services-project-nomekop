@@ -123,6 +123,16 @@ def prompt_credentials(stdscr, title):
     curses.echo()
     return username, password
 
+def prompt_name(stdscr, title):
+    rows, cols = stdscr.getmaxyx()
+    curses.echo()
+    stdscr.clear()
+    stdscr.addstr(rows // 2 - 2, cols // 2 - len(title) // 2, title)
+    stdscr.addstr(rows // 2, cols // 2 - 14, "Nomekop name: ")
+    name = stdscr.getstr(rows // 2, cols // 2 + 2).decode('utf-8')
+    curses.cbreak()
+    return name
+
 def authentification_screen(stdscr,content_win):
     options = ["Login", "Create Account"]
     current_selection = 0
@@ -217,9 +227,10 @@ def manage_nomekops(stdscr,content_win):
             if current_selection == 1:
                 view_store_nomekops(content_win)
             elif current_selection == 2:
-                buy_nomekops(content_win)
+                buy_nomekops(content_win, session.cookies.get("session_id"), "Tulup")
             elif current_selection == 3:
-                view_nomekop_stats(content_win, "Tulup")
+                nomekop_name = prompt_name(stdscr, "Nomekop stats")
+                view_nomekop_stats(content_win, nomekop_name)
             elif current_selection == 4:
                 break
 
@@ -332,12 +343,9 @@ def view_nomekop_stats(stdscr, nomekop):
     nomekop_stats = session.get(f'{base_url}/nomekops/nomekopstats/{nomekop}').text
     display_json(stdscr,sanitize_json(nomekop_stats))
 
-def view_store_nomekops(stdsrc):
-    pass
-
-def buy_nomekops(stdscr):
-    pass  # API call to buy a creature
-
+def buy_nomekops(stdscr, player, nomekop):
+    nomekop_msg = session.put(f'{base_url}/player/buyNomekop/{player}/{nomekop}').text
+    display_json(stdscr, sanitize_json(nomekop_msg))
 
 ########## API CALL 2)b)
 def view_players(stdscr):

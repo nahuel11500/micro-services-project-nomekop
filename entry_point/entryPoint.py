@@ -118,6 +118,24 @@ def get_infos_players ():
         # Handle any exceptions that occurred during the request
         return make_response(jsonify({"error": f"Request error: {str(e)}"}), 500)
 
+@app.route('/player/buyNomekop/<player>/<nomekop>', endpoint='buy_nomekop')
+@login_required
+def buy_nomekop (player,nomekop):
+    try:
+        req = requests.get(f'{player_service_url}/buy/{player}/{nomekop}')
+        # Check if the request was successful (status code 200)
+        if req.status_code == 200:
+            # Create a response with the JSON content
+            response = make_response(jsonify(req.json()))
+            response.status_code = 200
+            return response
+        else:
+            # Handle the error, for example, return an error response
+            return make_response(jsonify({"error": "Failed to retrieve buying info"}), req.status_code)
+    except requests.exceptions.RequestException as e:
+        # Handle any exceptions that occurred during the request
+        return make_response(jsonify({"error": f"Request error: {str(e)}"}), 500)
+
 ##########################################   Store     ########################################## 
 
 @app.route('/store/getNomekopsPrices', endpoint='get_nomekops_prices')
@@ -143,7 +161,7 @@ def get_nomekops_prices():
 @login_required
 def get_nomekops_stats(nomekopName):
     try:
-        req = requests.get(f'{nomekop_service_url}/getNomekopStats/Tulup')
+        req = requests.get(f'{nomekop_service_url}/getNomekopStats/{nomekopName}')
         if req.status_code == 200:
             # Create a response with the JSON content
             response = make_response(jsonify(req.json()))
