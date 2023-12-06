@@ -60,36 +60,36 @@ def sanitize_json(data):
     return sanitized_data
 
 def display_json(content_win, data, indent=0):
-    # Attempt to load JSON data
     try:
         json_data = json.loads(data)
     except json.JSONDecodeError as e:
-        content_win.addstr(0, 0, f"Error: {e}")
+        content_win.clear()
+        content_win.addstr(0, 0, f"Error: {str(e)}")
         content_win.refresh()
         content_win.getch()
         return
 
-    # Convert JSON to a formatted string
-    formatted_json = json.dumps(json_data, indent=indent)
-
-    # Initialize variables for scrolling
+    formatted_json = json.dumps(json_data, indent=indent).split('\n')
     max_y, max_x = content_win.getmaxyx()
     current_line = 0
-    line_count = formatted_json.count('\n') + 1
+    line_count = len(formatted_json)
 
     while True:
         content_win.clear()
+        content_win.addstr(0, 0, "Viewer - Press q to go back. Use arrow keys to scroll.")
 
-        # Display a portion of the JSON data
-        for i, line in enumerate(formatted_json.split('\n')):
-            if current_line <= i < current_line + max_y:
-                content_win.addstr(i - current_line, 0, line)
+        for i in range(1, max_y - 1):  # Adjusted loop to start from 1, leaving space for the header
+            if current_line + i < line_count:
+                line = formatted_json[current_line + i - 1]
+                content_win.addstr(i, 0, line[:max_x-1])
+
+        status_line = f"Line {current_line + 1} of {line_count}"
+        content_win.addstr(max_y-1, 0, status_line)
 
         content_win.refresh()
 
-        # Handle key presses for scrolling
         key = content_win.getch()
-        if key == curses.KEY_DOWN and current_line < line_count - max_y:
+        if key == curses.KEY_DOWN and current_line < line_count - max_y + 2:
             current_line += 1
         elif key == curses.KEY_UP and current_line > 0:
             current_line -= 1
@@ -118,8 +118,12 @@ def prompt_credentials(stdscr, title):
             break
         elif ch == 127:  # Backspace
             password = password[:-1]
+            # Remove the last asterisk
+            stdscr.addstr(rows // 2 + 1, cols // 2 + len(password) + 1, " ")
+            stdscr.move(rows // 2 + 1, cols // 2 + len(password) + 1)
         else:
             password += chr(ch)
+            stdscr.addstr(rows // 2 + 1, cols // 2 + len(password) + 1,"*")  # Display an asterisk instead of the character
     curses.echo()
     return username, password
 
@@ -154,7 +158,6 @@ def authentification_screen(stdscr,content_win):
         elif key in [curses.KEY_ENTER, 10]:
             username, password = prompt_credentials(stdscr, options[current_selection])
             success, message = login(username, password) if current_selection == 0 else create_account(username, password)
-            
             prompt_message(content_win, message)
             if success:
                 break
@@ -192,12 +195,20 @@ def main_menu(menu_win,content_win):
             current_selection += 1
         elif key in [curses.KEY_ENTER, 10]:
             if current_selection == 0:
+                content_win.clear()
+                content_win.refresh()
                 manage_nomekops(menu_win,content_win)
             elif current_selection == 1:
+                content_win.clear()
+                content_win.refresh()
                 interact_with_players(menu_win,content_win)
             elif current_selection == 2:
+                content_win.clear()
+                content_win.refresh()
                 participate_in_community(menu_win,content_win)
             elif current_selection == 3:
+                content_win.clear()
+                content_win.refresh()
                 participate_in_match(menu_win,content_win)
 
 
@@ -223,16 +234,25 @@ def manage_nomekops(stdscr,content_win):
             current_selection += 1
         elif key in [curses.KEY_ENTER, 10]:
             if current_selection == 0:
+                content_win.clear()
+                content_win.refresh()
                 view_nomekops(content_win)
             if current_selection == 1:
+                content_win.clear()
+                content_win.refresh()
                 view_store_nomekops(content_win)
             elif current_selection == 2:
-                nomekop_name_buy = prompt_name(stdscr, "Nomekop to buy", "Nomekop name: ")
-                buy_nomekops(content_win, session.cookies.get("session_id"), nomekop_name_buy)
+                content_win.clear()
+                content_win.refresh()
+                buy_nomekops(content_win, session.cookies.get("session_id"), "Tulup")
             elif current_selection == 3:
-                nomekop_name = prompt_name(stdscr, "Nomekop stats", "Nomekop name: ")
+                content_win.clear()
+                content_win.refresh()
+                nomekop_name = prompt_name(stdscr,"Nomekop name:  ","Nomekop stats")
                 view_nomekop_stats(content_win, nomekop_name)
             elif current_selection == 4:
+                content_win.clear()
+                content_win.refresh()
                 break
 
 
@@ -258,12 +278,20 @@ def interact_with_players(menu_win,content_win):
             current_selection += 1
         elif key in [curses.KEY_ENTER, 10]:
             if current_selection == 0:
+                content_win.clear()
+                content_win.refresh()
                 view_players(content_win)
             elif current_selection == 1:
+                content_win.clear()
+                content_win.refresh()
                 send_message(content_win)
             elif current_selection == 2:
+                content_win.clear()
+                content_win.refresh()
                 see_message(content_win)
             elif current_selection == 3:
+                content_win.clear()
+                content_win.refresh()
                 break
 
 def participate_in_community(stdscr,content_win):
@@ -288,14 +316,24 @@ def participate_in_community(stdscr,content_win):
             current_selection += 1
         elif key in [curses.KEY_ENTER, 10]:
             if current_selection == 0:
+                content_win.clear()
+                content_win.refresh()
                 view_invites(content_win)
             elif current_selection == 1:
+                content_win.clear()
+                content_win.refresh()
                 see_match(content_win)
             elif current_selection == 2:
+                content_win.clear()
+                content_win.refresh()
                 see_match_details(content_win)
             elif current_selection == 3:
+                content_win.clear()
+                content_win.refresh()
                 see_round_details(content_win)
             elif current_selection == 4:
+                content_win.clear()
+                content_win.refresh()
                 break
 
 def participate_in_match(stdscr,content_win):
@@ -319,16 +357,28 @@ def participate_in_match(stdscr,content_win):
             current_selection += 1
         elif key in [curses.KEY_ENTER, 10]:
             if current_selection == 0:
+                content_win.clear()
                 join_match(content_win)
             elif current_selection == 1:
-                create_match(content_win)
+                content_win.clear()
+                content_win.refresh()
+                player_name =prompt_name(stdscr,"Player name:  ","Player selection")
+                create_match(content_win,player_name)
             elif current_selection == 2:
+                content_win.clear()
+                content_win.refresh()
                 send_nomepok(content_win)
             elif current_selection == 3:
+                content_win.clear()
+                content_win.refresh()
                 see_match_details(content_win)
             elif current_selection == 4:
+                content_win.clear()
+                content_win.refresh()
                 see_round_details(content_win)
             elif current_selection == 5:
+                content_win.clear()
+                content_win.refresh()
                 break
 
 
@@ -354,6 +404,8 @@ def view_players(stdscr):
     display_json(stdscr,sanitize_json(players))
 
 def view_nomekops(stdscr):
+    nomekops_player = session.get(f'{base_url}/player/get_nomekops').text
+    display_json(stdscr,sanitize_json(nomekops_player))
     pass
 
 def send_message(stdsrc):
@@ -367,8 +419,9 @@ def see_message(stdsrc):
 def view_invites(stdscr):
     pass
 
-def create_match(stdscr):
-    pass
+def create_match(stdscr,player_name):
+    match_msg = session.post(f'{base_url}/player/match/{player_name}').text
+    display_json(stdscr,sanitize_json(match_msg))
 
 def see_match(stdscr):
     pass

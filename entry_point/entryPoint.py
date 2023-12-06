@@ -137,13 +137,15 @@ def buy_nomekop (nomekop):
         # Handle any exceptions that occurred during the request
         return make_response(jsonify({"error": f"Request error: {str(e)}"}), 500)
 
-### This function create a match beetween the player and the requested.
-@app.route('/player/match/<player_name>', endpoint='create_match', methods=['POST'])    
+
+
+@app.route('/player/get_nomekops', endpoint='get_player_nomekops', methods=['GET'])    
 @login_required
-def create_match(player_name):
+def get_player_nomekops():
+    """This function return the list of pokemons associated with a player"""
     requester = get_name(request.cookies.get('session_id'))
     try:
-        req = requests.post(f"{match_service_url}/create_match/{requester}/{player_name}")
+        req = requests.get(f"{player_service_url}/player/get_nomekops/{requester}")
         # Check if the request was successful (status code 200)
         if req.status_code == 200:
             # Create a response with the JSON content
@@ -152,12 +154,14 @@ def create_match(player_name):
             return response
         else:
             # Handle the error, for example, return an error response
-            return make_response(jsonify({"error": "Failed to create match"}), req.status_code)
+            return make_response(jsonify({"error": req.text}), req.status_code)
     except requests.exceptions.RequestException as e:
         # Handle any exceptions that occurred during the request
         return make_response(jsonify({"error": f"Request error: {str(e)}"}), 500)
 
 
+#################################################################################################
+##########################################   Store     ########################################## 
 #################################################################################################
 
 @app.route('/store/getNomekopsPrices', endpoint='get_nomekops_prices')
@@ -199,6 +203,38 @@ def get_nomekops_stats(nomekopName):
 ##########################################   User Informations      ########################################## 
 
 ##########################################   Match      ########################################## 
+
+### This function create a match beetween the player and the requested.
+@app.route('/player/match/<player_name>', endpoint='create_match', methods=['POST'])    
+@login_required
+def create_match(player_name):
+    requester = get_name(request.cookies.get('session_id'))
+    ###Test if the player_name exist
+    try:
+        req = requests.get(f"{player_service_url}/player/{player_name}")
+        if req.status_code == 200:
+           pass
+        else:
+            # Handle the error, for example, return an error response
+            return make_response(jsonify({"error": req.text}), req.status_code)
+    except requests.exceptions.RequestException as e:
+        # Handle any exceptions that occurred during the request
+        return make_response(jsonify({"error": f"Request error: {str(e)}"}), 500)
+    
+    try:
+        req = requests.post(f"{match_service_url}/create_match/{requester}/{player_name}")
+        # Check if the request was successful (status code 200)
+        if req.status_code == 200:
+            # Create a response with the JSON content
+            response = make_response(jsonify(req.json()))
+            response.status_code = 200
+            return response
+        else:
+            # Handle the error, for example, return an error response
+            return make_response(jsonify({"error": req.text}), req.status_code)
+    except requests.exceptions.RequestException as e:
+        # Handle any exceptions that occurred during the request
+        return make_response(jsonify({"error": f"Request error: {str(e)}"}), 500)
 
 ##########################################   Stat       ########################################## 
 

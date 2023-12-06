@@ -13,6 +13,7 @@ HOST = '0.0.0.0'
 # Define the URL of store service  using a env variable 
 store_service_url = os.getenv('STORE_SERVICE_URL', 'http://localhost:3203')
 
+
 absolute_path = os.path.dirname(__file__)
 relative_path = "databases/players.json"
 full_path = os.path.join(absolute_path, relative_path)
@@ -40,6 +41,13 @@ def get_player(player_name):
          return make_response(jsonify(player), 200)
    return(make_response("Player not found", 400))
 
+## Return the pokemons of one player
+@app.route("/player/get_nomekops/<player_name>", methods=['GET'])
+def get_nomekops_player(player_name):
+   for player in players:
+      if player["username"] == player_name:
+         return make_response(jsonify(player["nomekops"]), 200)
+   return(make_response("Player not found", 400))
 
 ## Create a player
 @app.route("/player/<player_name>", methods=['POST'])

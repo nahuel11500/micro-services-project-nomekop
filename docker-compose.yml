@@ -36,6 +36,7 @@ services:
     build: ./match/
     environment:
       - STAT_SERVICE_URL=http://stat_container:3205
+      - NOMEKOP_SERVICE_URL=http://nomekop_container:3202
 
   stat:
     container_name: stat_container
@@ -46,4 +47,3 @@ services:
     build: ./user_information/
     environment:
       - PLAYER_SERVICE_URL=http://player_container:3201
-
