@@ -160,7 +160,7 @@ def main_menu(menu_win,content_win):
 
     # Enable keypad mode
     menu_win.keypad(True)
-
+    rows, cols = menu_win.getmaxyx()
     while True:
         # Clear the window
         menu_win.clear()
@@ -168,9 +168,9 @@ def main_menu(menu_win,content_win):
         menu_win.addstr("Main Menu\n\n")
         for idx, item in enumerate(menu_items):
             if idx == current_selection:
-                menu_win.addstr(f"> {item}\n", curses.A_REVERSE)
+                menu_win.addstr(idx+2, cols // 2 - 10,f"> {item}\n", curses.A_REVERSE)
             else:
-                menu_win.addstr(f"  {item}\n")
+                menu_win.addstr(idx+2, cols // 2 - 10,f"  {item}\n")
 
         # Refresh the window to apply changes
         menu_win.refresh()
@@ -202,9 +202,9 @@ def manage_nomekops(stdscr,content_win):
         stdscr.addstr("Nomekops Management\n\n")
         for idx, item in enumerate(menu_items):
             if idx == current_selection:
-                stdscr.addstr(rows // 2 + idx, cols // 2 - 10,f"> {item}\n", curses.A_REVERSE)
+                stdscr.addstr(idx+2, cols // 2 - 10,f"> {item}\n", curses.A_REVERSE)
             else:
-                stdscr.addstr(rows // 2 + idx, cols // 2 - 10,f"  {item}\n")
+                stdscr.addstr(idx+2, cols // 2 - 10,f"  {item}\n")
         
         key = stdscr.getch()
         if key == curses.KEY_UP and current_selection > 0:
@@ -233,9 +233,9 @@ def interact_with_players(menu_win,content_win):
         menu_win.addstr("Player Interaction\n\n")
         for idx, item in enumerate(menu_items):
             if idx == current_selection:
-                menu_win.addstr(rows // 2 + idx, cols // 2 - 10,f"> {item}\n", curses.A_REVERSE)
+                menu_win.addstr(idx+2, cols // 2 - 10,f"> {item}\n", curses.A_REVERSE)
             else:
-                menu_win.addstr(rows // 2 + idx, cols // 2 - 10,f"  {item}\n")
+                menu_win.addstr(idx+2, cols // 2 - 10,f"  {item}\n")
         
         key = menu_win.getch()
         if key == curses.KEY_UP and current_selection > 0:
@@ -263,9 +263,9 @@ def participate_in_community(stdscr,content_win):
         stdscr.addstr("Community\n\n")
         for idx, item in enumerate(menu_items):
             if idx == current_selection:
-                stdscr.addstr(rows // 2 + idx, cols // 2 - 10,f"> {item}\n", curses.A_REVERSE)
+                stdscr.addstr(idx+2, cols // 2 - 10,f"> {item}\n", curses.A_REVERSE)
             else:
-                stdscr.addstr(rows // 2 + idx, cols // 2 - 10,f"  {item}\n")
+                stdscr.addstr(idx+2, cols // 2 - 10,f"  {item}\n")
         
         key = stdscr.getch()
         if key == curses.KEY_UP and current_selection > 0:
@@ -288,14 +288,15 @@ def participate_in_match(stdscr,content_win):
     # Implementation of match participation
     menu_items = ["Join a match","Create a match", "Send a nomekop to the arena","see match details","See round details","Go Back"]
     current_selection = 0
+    rows, cols = stdscr.getmaxyx()
     while True:
         stdscr.clear()
         stdscr.addstr("Match\n\n")
         for idx, item in enumerate(menu_items):
             if idx == current_selection:
-                stdscr.addstr(f"> {item}\n", curses.A_REVERSE)
+                stdscr.addstr(idx+2, cols // 2 - 10,f"> {item}\n", curses.A_REVERSE)
             else:
-                stdscr.addstr(f"  {item}\n")
+                stdscr.addstr(idx+2, cols // 2 - 10,f"  {item}\n")
         
         key = stdscr.getch()
         if key == curses.KEY_UP and current_selection > 0:
