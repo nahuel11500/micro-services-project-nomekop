@@ -59,7 +59,7 @@ def sanitize_json(data):
     sanitized_data = json.loads(json.dumps(data))
     return sanitized_data
 
-def display_json(content_win, data, indent=0):
+def display_json(content_win, data, indent=2):
     try:
         json_data = json.loads(data)
     except json.JSONDecodeError as e:
@@ -136,6 +136,38 @@ def prompt_name(stdscr, title, argument_name):
     name = stdscr.getstr(rows // 2, cols // 2 + 2).decode('utf-8')
     curses.cbreak()
     return name
+
+def prompt_names(stdscr, title):
+    """Prompt for match number and nomekop based on a title."""
+    
+    rows, cols = stdscr.getmaxyx()
+    curses.echo()
+    stdscr.clear()
+
+    # Display title
+    title_x = max(0, cols // 2 - len(title) // 2)
+    stdscr.addstr(rows // 2 - 2, title_x, title)
+
+    # Prompt for Match number
+    match_prompt = "Match number: "
+    match_prompt_x = max(0, cols // 2 - len(match_prompt) // 2)
+    stdscr.addstr(rows // 2, match_prompt_x, match_prompt)
+    curses.echo()
+    match_number = stdscr.getstr(rows // 2, match_prompt_x + len(match_prompt)).decode('utf-8')
+    curses.noecho()
+
+    stdscr.refresh()
+    # Prompt for Nomekop
+    nomekop_prompt = "Nomekop: "
+    nomekop_prompt_x = max(0, cols // 2 - len(nomekop_prompt) // 2)
+    stdscr.addstr(rows // 2 + 1, nomekop_prompt_x, nomekop_prompt)
+    curses.echo()
+    nomekop = stdscr.getstr(rows // 2 + 1, nomekop_prompt_x + len(nomekop_prompt)).decode('utf-8')
+    curses.noecho()
+
+    return (match_number, nomekop)
+
+
 
 def authentification_screen(stdscr,content_win):
     options = ["Login", "Create Account"]
@@ -367,7 +399,9 @@ def participate_in_match(stdscr,content_win):
             elif current_selection == 2:
                 content_win.clear()
                 content_win.refresh()
-                send_nomepok(content_win)
+                view_nomekops_and_match(content_win)
+                tuple =prompt_names(stdscr,"Pokemon to send to the arena")
+                send_nomepok(tuple)
             elif current_selection == 3:
                 content_win.clear()
                 content_win.refresh()
@@ -437,10 +471,38 @@ def see_round_details(stdscr):
 def join_match(stdscr):
     pass
 
-def send_nomepok(stdscr):
+def view_nomekops_and_match(stdscr):
+    # Retrieve match list data
+    match_lists_response = session.get(f'{base_url}/matchs')
+    match_lists = match_lists_response.json()  # Convert response to JSON
+
+    # Check if match_lists is a list and iterate through it if it is
+    numbered_players = []
+    if isinstance(match_lists, list):
+        for index, match in enumerate(match_lists):
+            if "players" in match:
+                # Append player name with a number
+                player_name_with_number = f'{index + 1} : {match["players"]}'
+                numbered_players.append(player_name_with_number)
+    else:
+        raise TypeError("Expected a list in the JSON response")
+
+    # Retrieve pokemon list data
+    pokemon_list_response = session.get(f'{base_url}/player/get_nomekops')
+    pokemon_list = pokemon_list_response.json()  # Convert response to JSON
+
+    # Combine both JSON data
+    combined_data = {
+        'match_lists': numbered_players,
+        'pokemon_list': pokemon_list
+    }
+   
+    display_json(stdscr, sanitize_json(json.dumps(combined_data, indent=4)))
+
+
+
+def send_nomepok(tuple):
     pass
-
-
 ############################# API CALLS
 
 

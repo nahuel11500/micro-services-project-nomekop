@@ -32,6 +32,10 @@ def get_matchs():
 def get_match(player_name,player_request):
    return make_response(jsonify(match_already_exist(player_name,player_request)[1]), 200)
 
+@app.route("/match/<player_name>", methods = ['GET'])
+def get_match_of_a_player(player_name):
+   return make_response(jsonify(get_matchs_of_player(player_name)), 200)
+
 @app.route("/create_match/<player_name>/<player_request>", methods = ['POST'])
 def create_match(player_name,player_request):
    """This function create a match beetween player_name and player_request. It verifies that it doesn't already exist"""
@@ -77,6 +81,14 @@ def match_already_exist(player_name,player_request):
       if m["players"] == [player_name,player_request] or  m["players"] == [player_request,player_name]:
          return (True,m)
    return (False,m)
+
+def get_matchs_of_player(player_name):
+   """ This function return a tuple (True,Match) or (False,"Null")"""
+   list_match=[]
+   for m in matchs:
+      if m["players"][0] == player_name or  m["players"][1] == player_name:
+         list_match.append(m)
+   return (list_match)
 
 def erase_match(player_name,player_request):
    for m in matchs:
