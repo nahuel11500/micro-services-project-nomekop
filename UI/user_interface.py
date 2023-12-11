@@ -443,7 +443,6 @@ def view_players(stdscr):
 def view_nomekops(stdscr):
     nomekops_player = session.get(f'{base_url}/player/get_nomekops').text
     display_json(stdscr,sanitize_json(nomekops_player))
-    pass
 
 def send_message(stdsrc):
     pass
@@ -461,7 +460,8 @@ def create_match(stdscr,player_name):
     display_json(stdscr,sanitize_json(match_msg))
 
 def see_match(stdscr):
-    pass
+    match_msg = session.get(f'{base_url}/get_matchs').text
+    display_json(stdscr,sanitize_json(match_msg))
 
 def see_match_details(stdscr):
     pass
@@ -507,12 +507,9 @@ def view_nomekops_and_match(stdscr):
 
 
 def send_nomepok(match_number,nomekop,numbered_players_dic,content_window):
-    print("hey")
-    print(numbered_players_dic)
-    print("hey")
     player_name,player_request = numbered_players_dic[int(match_number)]
     match_lists_response = session.post(f'{base_url}/match/add_nomekop/{player_name}/{player_request}/{nomekop}')
-    prompt_message(content_window,match_lists_response.text)
+    display_json(content_window,match_lists_response.text)
 
 ############################# API CALLS
 

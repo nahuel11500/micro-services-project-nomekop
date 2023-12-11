@@ -59,20 +59,26 @@ def create_match(player_name,player_request):
 def send_nomekop(player_name,player_request,nomekop):
    ## Verify if match exist
    (bool,m) = match_already_exist(player_name,player_request)
+   print(player_request)
    if bool== False:
       return make_response(jsonify({"error": "Match doesn't exist"}), 400)
    ## Add pokemons to the correct part 
-   if m["players"][0] == player_name:
+   if m["players"][0] == player_request:
       m["nomepoks"][0] = nomekop
    else:
       m["nomepoks"][1] = nomekop
    ## Test if both pokemons are here, if yes, start a round
    if m["nomepoks"][0] != "null" and m["nomepoks"][1] != "null":
+      #Augment the round  
       m["current_round"]+=1
-      start_round(m["nomepoks"][0],m["nomepoks"][1])
-      #Augment the round
-   if erase_match(player_name,player_request): 
-      matchs.append(m)   
+      pokemon_fainted=start_round(m["nomepoks"][0],m["nomepoks"][1])
+      ## Reset the pokemons
+      m["nomepoks"]= ["null", "null"]
+      if pokemon_fainted== m["nomepoks"][0]:
+         m["score"][0]+=1   
+      else:
+         m["score"][1]+=1 
+      return make_response(jsonify({"success": f"Pokemon sent with success, first round passed and {pokemon_fainted} KO."}), 200) 
    return make_response(jsonify({"success": "Pokemon sent"}), 200)
 
 def match_already_exist(player_name,player_request):
@@ -116,13 +122,12 @@ def calculate_damage(attacker, defender):
     return damage
 
 def start_round(pokemon1,pokemon2):
-   stat_p1 = req.get(f'{nomekop_service_url}/getNomekopsStats/{pokemon1}').json()
-   stat_p2 = req.get(f'{nomekop_service_url}/getNomekopsStats/{pokemon2}').json()
-   
+   stat_p1 = req.get(f'{nomekop_service_url}/getNomekopStats/{pokemon1}').json()
+   stat_p2 = req.get(f'{nomekop_service_url}/getNomekopStats/{pokemon2}').json()
    while stat_p1["health"] > 0 and stat_p2["health"] > 0:
         # Determine the starting Pokemon randomly
-        starting_pokemon = random.choice([pokemon1, pokemon2])
-        other_pokemon = pokemon2 if starting_pokemon == pokemon1 else pokemon1
+        starting_pokemon = random.choice([stat_p1, stat_p2])
+        other_pokemon = stat_p2 if starting_pokemon == pokemon1 else stat_p1
 
         # Calculate the damage dealt by the starting Pokemon to the opponent
         damage_dealt = calculate_damage(starting_pokemon, other_pokemon)
@@ -137,6 +142,22 @@ def start_round(pokemon1,pokemon2):
             pass
         else:
             return(f"{other_pokemon['name']} has fainted!")
+
+        # Calculate the damage dealt by the other Pokemon to the opponent
+        damage_dealt = calculate_damage(other_pokemon,starting_pokemon)
+
+        # Update the opponent's health
+        starting_pokemon["health"] -= damage_dealt
+
+        print(f"{other_pokemon['name']} attacks {starting_pokemon['name']} for {damage_dealt} damage!")
+
+        print("Turn finished")
+
+        # Check if the opponent's health is greater than 0
+        if starting_pokemon["health"] > 0:
+            pass
+        else:
+            return(f"{starting_pokemon['name']} has fainted!")
 
 
 

@@ -240,7 +240,8 @@ def create_match(player_name):
 @login_required
 def send_pokemon_match(player_name,player_request,nomekop):
     requester = get_name(request.cookies.get('session_id'))
-    ###add if the player_name exist
+    if player_name.strip() == requester.strip():
+        player_name = player_request
     try:
         req = requests.post(f"{match_service_url}/add_nomekop/{player_name}/{requester}/{nomekop}")
         # Check if the request was successful (status code 200)
@@ -257,9 +258,9 @@ def send_pokemon_match(player_name,player_request,nomekop):
         return make_response(jsonify({"error": f"Request error: {str(e)}"}), 500)
 
 
-@app.route('/matchs', endpoint='get_matchs', methods=['GET'])    
+@app.route('/matchs', endpoint='get_match', methods=['GET'])    
 @login_required
-def get_matchs():
+def get_match():
     requester = get_name(request.cookies.get('session_id'))
     try:
         req = requests.get(f"{match_service_url}//match/{requester}")
@@ -277,6 +278,23 @@ def get_matchs():
         return make_response(jsonify({"error": f"Request error: {str(e)}"}), 500)
     
 
+@app.route('/get_matchs', endpoint='get_matchs', methods=['GET'])    
+@login_required
+def get_matchs():
+    try:
+        req = requests.get(f"{match_service_url}/matchs")
+        # Check if the request was successful (status code 200)
+        if req.status_code == 200:
+            # Create a response with the JSON content
+            response = make_response(jsonify(req.json()))
+            response.status_code = 200
+            return response
+        else:
+            # Handle the error, for example, return an error response
+            return make_response(jsonify({"error": req.text}), req.status_code)
+    except requests.exceptions.RequestException as e:
+        # Handle any exceptions that occurred during the request
+        return make_response(jsonify({"error": f"Request error: {str(e)}"}), 500)
 
 ##########################################   Stat       ########################################## 
 
