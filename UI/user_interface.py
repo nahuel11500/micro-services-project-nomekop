@@ -278,11 +278,12 @@ def manage_nomekops(stdscr,content_win):
             elif current_selection == 2:
                 content_win.clear()
                 content_win.refresh()
-                buy_nomekops(content_win, session.cookies.get("session_id"), "Tulup")
+                nomekop_buy = prompt_name(stdscr,"Buy nomekop","Nomekop name:  ")
+                buy_nomekops(content_win, session.cookies.get("session_id"), nomekop_buy)
             elif current_selection == 3:
                 content_win.clear()
                 content_win.refresh()
-                nomekop_name = prompt_name(stdscr,"Nomekop name:  ","Nomekop stats")
+                nomekop_name = prompt_name(stdscr,"Nomekop stats","Nomekop name:  ")
                 view_nomekop_stats(content_win, nomekop_name)
             elif current_selection == 4:
                 content_win.clear()
