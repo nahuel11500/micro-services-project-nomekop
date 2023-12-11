@@ -116,10 +116,10 @@ def prompt_credentials(stdscr, title):
         ch = stdscr.getch()
         if ch == 10:  # Enter key
             break
-        elif ch == 127:  # Backspace
+        elif ch == 8:  # Backspace
             password = password[:-1]
             # Remove the last asterisk
-            stdscr.addstr(rows // 2 + 1, cols // 2 + len(password) + 1, " ")
+            stdscr.addstr(rows // 2 + 1, cols // 2 + len(password)+2, " ")
             stdscr.move(rows // 2 + 1, cols // 2 + len(password) + 1)
         else:
             password += chr(ch)
@@ -172,7 +172,8 @@ def prompt_names(stdscr, title):
 def authentification_screen(stdscr,content_win):
     options = ["Login", "Create Account"]
     current_selection = 0
-
+    # Enable keypad mode
+    content_win.keypad(True)
     while True:
         stdscr.clear()
         stdscr.addstr("Authentification\n\n")
@@ -182,7 +183,8 @@ def authentification_screen(stdscr,content_win):
             else:
                 stdscr.addstr(f"  {option}\n")
         
-        key = stdscr.getch()
+        stdscr.refresh()
+        key = content_win.getch()
         if key == curses.KEY_UP and current_selection > 0:
             current_selection -= 1
         elif key == curses.KEY_DOWN and current_selection < len(options) - 1:
@@ -399,9 +401,9 @@ def participate_in_match(stdscr,content_win):
             elif current_selection == 2:
                 content_win.clear()
                 content_win.refresh()
-                view_nomekops_and_match(content_win)
-                tuple =prompt_names(stdscr,"Pokemon to send to the arena")
-                send_nomepok(tuple)
+                numbered_players = view_nomekops_and_match(content_win)
+                (match_number,nomekop) =prompt_names(stdscr,"Pokemon to send to the arena")
+                send_nomepok(match_number,nomekop,numbered_players,content_win)
             elif current_selection == 3:
                 content_win.clear()
                 content_win.refresh()
@@ -478,12 +480,14 @@ def view_nomekops_and_match(stdscr):
 
     # Check if match_lists is a list and iterate through it if it is
     numbered_players = []
+    numbered_players_dic = {}
     if isinstance(match_lists, list):
         for index, match in enumerate(match_lists):
             if "players" in match:
                 # Append player name with a number
                 player_name_with_number = f'{index + 1} : {match["players"]}'
                 numbered_players.append(player_name_with_number)
+                numbered_players_dic[index + 1] = match["players"]
     else:
         raise TypeError("Expected a list in the JSON response")
 
@@ -498,11 +502,17 @@ def view_nomekops_and_match(stdscr):
     }
    
     display_json(stdscr, sanitize_json(json.dumps(combined_data, indent=4)))
+    return numbered_players_dic
 
 
+def send_nomepok(match_number,nomekop,numbered_players_dic,content_window):
+    print("hey")
+    print(numbered_players_dic)
+    print("hey")
+    player_name,player_request = numbered_players_dic[int(match_number)]
+    match_lists_response = session.post(f'{base_url}/match/add_nomekop/{player_name}/{player_request}/{nomekop}')
+    prompt_message(content_window,match_lists_response.text)
 
-def send_nomepok(tuple):
-    pass
 ############################# API CALLS
 
 

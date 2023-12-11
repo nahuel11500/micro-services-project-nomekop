@@ -29,6 +29,12 @@
       "health": 65,
       "damage": 35,
       "type": "Plant"
+    },
+    {
+      "name": "Dracaufeu",
+      "health": 200,
+      "damage": 55,
+      "type": "Fire"
     }
   ]
 }

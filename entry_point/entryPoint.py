@@ -236,24 +236,13 @@ def create_match(player_name):
         # Handle any exceptions that occurred during the request
         return make_response(jsonify({"error": f"Request error: {str(e)}"}), 500)
     
-@app.route('/player/match/<player_name>/<nomekop>', endpoint='send_pokemon_match', methods=['POST'])    
+@app.route('/match/add_nomekop/<player_name>/<player_request>/<nomekop>', endpoint='send_pokemon_match', methods=['POST'])    
 @login_required
-def send_pokemon_match(player_name,nomekop):
+def send_pokemon_match(player_name,player_request,nomekop):
     requester = get_name(request.cookies.get('session_id'))
-    ###Test if the player_name exist
+    ###add if the player_name exist
     try:
-        req = requests.get(f"{player_service_url}/player/{player_name}")
-        if req.status_code == 200:
-           pass
-        else:
-            # Handle the error, for example, return an error response
-            return make_response(jsonify({"error": req.text}), req.status_code)
-    except requests.exceptions.RequestException as e:
-        # Handle any exceptions that occurred during the request
-        return make_response(jsonify({"error": f"Request error: {str(e)}"}), 500)
-    
-    try:
-        req = requests.post(f"{match_service_url}/create_match/{requester}/{player_name}")
+        req = requests.post(f"{match_service_url}/add_nomekop/{player_name}/{requester}/{nomekop}")
         # Check if the request was successful (status code 200)
         if req.status_code == 200:
             # Create a response with the JSON content
