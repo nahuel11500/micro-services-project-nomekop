@@ -464,7 +464,8 @@ def see_match(stdscr):
     display_json(stdscr,sanitize_json(match_msg))
 
 def see_match_details(stdscr):
-    pass
+    match_msg = session.get(f'{base_url}/matchs').text
+    display_json(stdscr,sanitize_json(match_msg))
 
 def see_round_details(stdscr):
     pass

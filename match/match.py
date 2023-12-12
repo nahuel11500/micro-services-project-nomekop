@@ -127,7 +127,7 @@ def start_round(pokemon1,pokemon2):
    while stat_p1["health"] > 0 and stat_p2["health"] > 0:
         # Determine the starting Pokemon randomly
         starting_pokemon = random.choice([stat_p1, stat_p2])
-        other_pokemon = stat_p2 if starting_pokemon == pokemon1 else stat_p1
+        other_pokemon = stat_p2 if starting_pokemon == stat_p1 else stat_p1
 
         # Calculate the damage dealt by the starting Pokemon to the opponent
         damage_dealt = calculate_damage(starting_pokemon, other_pokemon)
