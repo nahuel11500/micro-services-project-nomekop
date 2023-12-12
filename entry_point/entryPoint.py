@@ -308,7 +308,6 @@ def get_role(session_id):
 
 def get_name(session_id):
     """This function return the role of someone based on its session id"""
-    print(sessions)
     for session in sessions:
         if str(session_id) == session["session_id"]:
             return session["name"]

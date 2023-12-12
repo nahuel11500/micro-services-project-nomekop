@@ -525,7 +525,7 @@ def create_account(username, password):
             response_data = login_response.json()
             session_id = response_data.get('Session_Id')
             session.cookies.set('session_id', session_id)
-            return True, f"Successful Account creation with username: {username}"
+            return False, f"Successful Account creation with username: {username}"
         else:
             return False, f"Unsuccessful connection. Reason: {login_response.text}"
     except requests.RequestException as e:

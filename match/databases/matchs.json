@@ -8,24 +8,6 @@
       "current_round": 0,
       "score": [0, 0],
       "nomepoks": ["Smous", "Smous"]
-    },
-    {
-      "state": "in combat",
-      "players": ["player_1", "player_2"],
-      "creation_date": "30112023",
-      "winner": "NA",
-      "current_round": 3,
-      "score": [3, 0],
-      "nomepoks": ["Smous", "Smous"]
-    },
-    {
-      "state": "terminated",
-      "players": ["player_1", "player_2"],
-      "creation_date": "30112023",
-      "winner": "player_1",
-      "current_round": 5,
-      "score": [4, 1],
-      "nomepoks": ["Smous", "Smous"]
     }
   ]
 }

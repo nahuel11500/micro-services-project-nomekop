@@ -55,8 +55,10 @@ def create_player(player_name):
    infos = {
       "username": player_name,
       "nomekops": [],
-      "credit": 0,
-      "Badges": []
+      "credit": 100,
+      "Badges": [],
+      "match_win": 0,
+      "match_lost": 1
     }
    players.append(infos)
    return(make_response(jsonify({"message": "Player added"}), 200))
