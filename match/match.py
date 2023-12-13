@@ -72,12 +72,13 @@ def send_nomekop(player_name,player_request,nomekop):
       #Augment the round  
       m["current_round"]+=1
       pokemon_fainted=start_round(m["nomepoks"][0],m["nomepoks"][1])
-      ## Reset the pokemons
-      m["nomepoks"]= ["null", "null"]
+      
       if pokemon_fainted== m["nomepoks"][0]:
          m["score"][0]+=1   
       else:
          m["score"][1]+=1 
+      ## Reset the pokemons   
+      m["nomepoks"]= ["null", "null"]
       return make_response(jsonify({"success": f"Pokemon sent with success, first round passed and {pokemon_fainted} KO."}), 200) 
    return make_response(jsonify({"success": "Pokemon sent"}), 200)
 
